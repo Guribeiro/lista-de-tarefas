@@ -1,0 +1,37 @@
+
+
+.input-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 18px auto;
+    width: 60%;
+    background: #2f3640;
+    border-radius: 50px;
+    padding: 5px;
+    background-color: #353b48;
+}
+
+
+.input-container input {
+    outline: none;
+    border: none;
+    border-radius: 50px;
+    width: 85%;
+    line-height: 22.5px;
+    font-size: 24px;
+    color: white;
+    background: #353b48;
+    padding: 10px 24px;
+}
+
+.input-container a{
+    height: 100%;
+    font-size: 30.5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    padding: 8px;
+    
+}

@@ -1,0 +1,11 @@
+header{
+    padding-top: 5px;
+    text-align: center;
+    font-size: 32px;
+    text-transform: capitalize;
+}
+
+header h3{
+    color: white;
+    font-weight: 400;
+}
