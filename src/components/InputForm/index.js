@@ -13,51 +13,92 @@ class InputForm extends Component {
             titleLabel: props.titleLabel,
             placeholder: props.placeholder,
             tarefa: '',
-            tarefas: []
+            tarefas: [],
         }
 
         this.handleTask = this.handleTask.bind(this);
         this.deleteTarefa = this.deleteTarefa.bind(this);
+        this.createList = this.createList.bind(this);
+        this.handleNewTarefa = this.handleNewTarefa.bind(this);
     }
 
     handleTask(event) {
         event.preventDefault();
+
         const tarefa = this.state.tarefa
 
-        if(this.state.tarefa === ''){
+        if (this.state.tarefa === '') {
             alert('Insira uma tarefa válida')
 
-        }else{
+        } else {
 
-            const newTarefa = {
-                text: tarefa,
-                key: Date.now()
-            }
+            const newTarefa = this.handleNewTarefa(tarefa)
+
+            const { key } = newTarefa
+
+            localStorage.setItem(`@todo-list/tarefa/${key}`, JSON.stringify(newTarefa));
+
+            const retrievedObject = JSON.parse(localStorage.getItem(`@todo-list/tarefa/${key}`))
             
-            this.setState({tarefas: [...this.state.tarefas, newTarefa]})
-            
-            const {key} = newTarefa
-
-            const str_key = key.toString();
-
-            localStorage.setItem(`@todo-list/tarefa/${str_key}`, JSON.stringify(newTarefa));
-
-            const retrievedObject  = localStorage.getItem('@todo-list/tarefa')
+            this.setState({ tarefas: [...this.state.tarefas, retrievedObject] })
 
             this.setState({ tarefa: '' })
+
+
         }
-
-
     }
 
+    
+    componentDidMount(){
+        const localStorageList = this.createList(); 
+        console.log(localStorageList)
 
-    deleteTarefa(key){
-        const filtro = this.state.tarefas.filter((tarefa) =>{
+        for (let tarefa in localStorageList){
+            const elementTarefa = localStorageList[tarefa]
+
+            this.setState({ tarefas: [...this.state.tarefas, elementTarefa] })
+        }
+    }
+
+    deleteTarefa(key) {
+
+        const filtro = this.state.tarefas.filter((tarefa) => {
             return (tarefa.key !== key);
         })
 
-        this.setState({tarefas: filtro})
+        this.setState({ tarefas: filtro })
+
     }
+
+    createList() {
+
+        let itemsFromStorage = []
+
+        const keyList = (Object.keys(localStorage))
+
+        for (let index = 0; index < keyList.length; index++) {
+            itemsFromStorage.push(localStorage.getItem(keyList[index]))
+            
+        }
+
+        const newListMap = itemsFromStorage.map((tarefaObj) => {
+            return JSON.parse(tarefaObj)
+            
+        })
+
+        return newListMap
+    }
+ 
+    handleNewTarefa(tarefa){
+
+        const newTarefa = {
+            text: tarefa,
+            key: Date.now().toString()
+        }
+
+        return newTarefa;
+    }
+
 
     render() {
         return (
@@ -66,7 +107,7 @@ class InputForm extends Component {
                     <input type="text" name="" id="inputTodo" placeholder={this.state.placeholder}
                         value={this.state.tarefa}
                         onChange={(event) => this.setState({ tarefa: event.target.value })}
-                        
+
                     />
 
                     <a href='/' onClick={this.handleTask}>
@@ -74,7 +115,7 @@ class InputForm extends Component {
                     </a>
                 </div>
                 <div>
-                    <TodoList lista={this.state.tarefas} delete={this.deleteTarefa}/>
+                    <TodoList lista={this.state.tarefas} delete={this.deleteTarefa} />
                 </div>
             </main>
         );
