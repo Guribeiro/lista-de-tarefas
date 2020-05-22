@@ -49,17 +49,6 @@ class InputForm extends Component {
     }
 
     
-    componentDidMount(){
-        const localStorageList = this.createList(); 
-        console.log(localStorageList)
-
-        for (let tarefa in localStorageList){
-            const elementTarefa = localStorageList[tarefa]
-
-            this.setState({ tarefas: [...this.state.tarefas, elementTarefa] })
-        }
-    }
-
     deleteTarefa(key) {
 
         const filtro = this.state.tarefas.filter((tarefa) => {
@@ -67,6 +56,8 @@ class InputForm extends Component {
         })
 
         this.setState({ tarefas: filtro })
+
+        localStorage.removeItem(`@todo-list/tarefa/${key}`)
 
     }
 
