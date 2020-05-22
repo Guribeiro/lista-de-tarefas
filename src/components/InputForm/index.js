@@ -35,6 +35,7 @@ class InputForm extends Component {
             }
             
             this.setState({tarefas: [...this.state.tarefas, newTarefa]})
+
             
             this.setState({ tarefa: '' })
         }

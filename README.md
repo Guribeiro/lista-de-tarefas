@@ -17,6 +17,6 @@ You will also see any lint errors in the console.
 
 <p>
     <a href="/">
-        <img src="./src/assets/readme/20200518_180747.gif" alt="project logo" >
+        <img src="./src/assets/readme/20200518_180747.gif" alt="project logo">
     </a>
 </p>
