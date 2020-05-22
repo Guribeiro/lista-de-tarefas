@@ -35,13 +35,21 @@ class InputForm extends Component {
             }
             
             this.setState({tarefas: [...this.state.tarefas, newTarefa]})
-
             
+            const {key} = newTarefa
+
+            const str_key = key.toString();
+
+            localStorage.setItem(`@todo-list/tarefa/${str_key}`, JSON.stringify(newTarefa));
+
+            const retrievedObject  = localStorage.getItem('@todo-list/tarefa')
+
             this.setState({ tarefa: '' })
         }
 
 
     }
+
 
     deleteTarefa(key){
         const filtro = this.state.tarefas.filter((tarefa) =>{

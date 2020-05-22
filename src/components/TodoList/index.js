@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+
 import { MdRemoveCircleOutline } from 'react-icons/md';
 
 import './style.css';
