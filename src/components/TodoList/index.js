@@ -10,15 +10,19 @@ class TodoList extends Component {
     constructor(props) {
         super(props)
         this.state = {
-
+            tarefasFromStorage: localStorage.getItem(`@todo-list/tarefa/${1590262582109}`)
         }
         this.handleDelete = this.handleDelete.bind(this);
+
     }
 
 
     handleDelete(key) {
         this.props.delete(key);
     }
+
+
+
 
     render() {
         return (
@@ -27,12 +31,12 @@ class TodoList extends Component {
                     {
                         this.props.lista.map((tarefa) => {
                             return (
-                                <li key={tarefa.key} onClick={() => this.handleDelete(tarefa.key)} >{tarefa.text}
-                                    <a href="/" onClick={(event) =>{event.preventDefault()}}>
+                                <li key={tarefa.key} onClick={() => this.handleDelete(tarefa.key)} >
+                                    {tarefa.text}
+                                    <a href="/" onClick={(event) => { event.preventDefault() }}>
                                         <MdRemoveCircleOutline />
                                     </a>
                                 </li>
-
                             );
                         })
                     }
