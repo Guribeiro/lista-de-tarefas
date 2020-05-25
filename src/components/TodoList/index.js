@@ -10,19 +10,15 @@ class TodoList extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            tarefasFromStorage: localStorage.getItem(`@todo-list/tarefa/${1590262582109}`)
+           
         }
         this.handleDelete = this.handleDelete.bind(this);
 
     }
 
-
     handleDelete(key) {
         this.props.delete(key);
     }
-
-
-
 
     render() {
         return (

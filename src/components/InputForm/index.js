@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import TodoList from '../TodoList';
 
+import Utils from '../../utils';
+
 import './style.css';
 
 import { RiAddCircleLine } from 'react-icons/ri';
@@ -16,84 +18,69 @@ class InputForm extends Component {
             tarefas: [],
         }
 
-        this.handleNewTarefa = this.handleNewTarefa.bind(this);
-        this.handleTask = this.handleTask.bind(this);
+
         this.deleteTarefa = this.deleteTarefa.bind(this);
-        
-        //this.createList = this.createList.bind(this);
-
+        this.handleTask = this.handleTask.bind(this);
+        this.AllStorage = this.AllStorage.bind(this);
 
     }
-
-
-    handleNewTarefa(tarefa) {
-
-        const newTarefa = {
-            text: tarefa,
-            key: Date.now().toString()
-        }
-
-        return newTarefa;
-    }
-
 
     handleTask(event) {
         event.preventDefault();
 
         const tarefa = this.state.tarefa
 
-        if (this.state.tarefa === '') {
+        if (tarefa === '') {
             alert('Campo vazio. \nTente novamente')
 
         } else {
 
-            const newTarefa = this.handleNewTarefa(tarefa)
+            const key = Utils.keyGenerator();
 
-            const { key } = newTarefa
+            localStorage.setItem(`@todo-list/task/${key}`, tarefa)
 
-            localStorage.setItem(`@todo-list/tarefa/${key}`, JSON.stringify(newTarefa));
+            const itemsFromStorage = this.AllStorage();
 
-            const retrievedObject = JSON.parse(localStorage.getItem(`@todo-list/tarefa/${key}`))
+            this.setState({ tarefas: itemsFromStorage });
 
-            this.setState({ tarefas: [...this.state.tarefas, retrievedObject] })
-            
             this.setState({ tarefa: '' })
 
-
         }
     }
 
-    /*
-    createList() {
+    componentDidMount() {
+        const itemsFromStorage = this.AllStorage();
 
-        let itemsFromStorage = []
-
-        const keyList = (Object.keys(localStorage))
-
-        for (let index = 0; index < keyList.length; index++) {
-            itemsFromStorage.push(localStorage.getItem(keyList[index]))
-
-        }
-
-        const newListMap = itemsFromStorage.map((tarefaObj) => {
-            return JSON.parse(tarefaObj)
-
-        })
-
-        return newListMap;
+        this.setState({ tarefas: itemsFromStorage });
     }
-    */
+
     deleteTarefa(key) {
+        localStorage.removeItem(key);
 
-        const filtro = this.state.tarefas.filter((tarefa) => {
-            return (tarefa.key !== key);
+        const itemsFromStorage = this.AllStorage();
+
+        this.setState({ tarefas: itemsFromStorage })
+    }
+
+
+    AllStorage() {
+        const values = []
+
+        const keys = Object.keys(localStorage)
+
+        for (let index = 0; index < keys.length; index++) {
+            const element = keys[index];
+            values.push(element);
+
+        }
+
+        const ListItems = values.map((item) => {
+            return Utils.mountTask(item, localStorage.getItem(item));
         })
 
-        this.setState({ tarefas: filtro })
-
-        localStorage.removeItem(`@todo-list/tarefa/${key}`)
-
+        return ListItems;
     }
+
 
     render() {
         return (
